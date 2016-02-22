@@ -24,17 +24,18 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-      @post = Post.new(post_params)
+    @post = Post.new(post_params)
 
+    respond_to do |format|
       if @post.save
-        # Publish post data
-        Publisher.publish("posts", @post.attributes)
-
-        redirect_to @post, notice: 'Post was successfully created.'
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { render :show, status: :created, location: @post }
       else
-        render :new
+        format.html { render :new }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
+  end
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
