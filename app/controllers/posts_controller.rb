@@ -34,9 +34,7 @@ class PostsController < ApplicationController
 
     ch.default_exchange.publish(@post.body, :routing_key => q.name)
 
-    redirect_to @post, notice: 'Post was successfully created.'
-  else
-    render :new
+    redirect_to posts_url, notice: 'Post was successfully created.'
 
     conn.close
   end
