@@ -26,15 +26,19 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
+    conn = Bunny.new(:automatically_recover => false)
+    conn.start
+
+    ch   = conn.create_channel
+    q    = ch.queue("hello")
+
+    ch.default_exchange.publish(@post.body, :routing_key => q.name)
+
+    redirect_to @post, notice: 'Post was successfully created.'
+  else
+    render :new
+
+    conn.close
   end
 
   # PATCH/PUT /posts/1
