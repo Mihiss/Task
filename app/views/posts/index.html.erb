@@ -27,3 +27,17 @@
 <br>
 
 <%= link_to 'New Post', new_post_path %>
+
+<input type="button" onclick="
+<%
+    conn = Bunny.new(:automatically_recover => false)
+    conn.start
+
+    ch   = conn.create_channel
+    q    = ch.queue("hello")
+
+    q.subscribe do |delivery_info, properties, body|
+      puts "Received #{body}"
+    end
+  %>
+" value="Go to Google" />
