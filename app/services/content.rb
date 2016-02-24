@@ -4,10 +4,10 @@ class Content
   conn.start
 
   ch   = conn.create_channel
-  q    = ch.queue("hello")
+  q    = ch.queue("main")
 
   q.subscribe do |delivery_info, properties, body|
-    @value = "#{@value}\n#{body}"
+    @value = "#{@value} #{body}"
   end
 
   conn.close
