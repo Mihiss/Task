@@ -28,16 +28,4 @@
 
 <%= link_to 'New Post', new_post_path %>
 
-<%
-conn = Bunny.new(:automatically_recover => false)
-conn.start
-
-ch   = conn.create_channel
-q    = ch.queue("hello")
-
-q.subscribe do |delivery_info, properties, body| %>
-<h1><%= "#{body}" %></h1>
-<% end
-
-conn.close
-  %>
+<button onclick="queue()">Click me</button>

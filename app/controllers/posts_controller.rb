@@ -20,7 +20,7 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
   end
-  
+
   # POST /posts
   # POST /posts.json
   def create
@@ -35,6 +35,11 @@ class PostsController < ApplicationController
     ch.default_exchange.publish(@post.body, :routing_key => q.name)
 
     redirect_to posts_url, notice: 'Post was successfully created.'
+
+    conn.close
+
+    @a = Content.merge
+    puts "WYNIK: #{@a}"
 
     conn.close
   end
